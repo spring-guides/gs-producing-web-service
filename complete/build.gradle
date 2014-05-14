@@ -70,7 +70,8 @@ jar {
 // tag::dependencies[]
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.ws:spring-ws-core:2.1.4.RELEASE")
+    compile("org.springframework.ws:spring-ws-core:2.2.0.RC1")
+    compile("wsdl4j:wsdl4j:1.6.1")
     jaxb("com.sun.xml.bind:jaxb-xjc:2.2.4-1")
     compile(files(genJaxb.classesDir).builtBy(genJaxb))
 }

@@ -63,7 +63,7 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 [[initial]]
 == Add Spring-WS dependency
 
-The project you create needs to include `spring-ws-core` as a dependency in your build file.
+The project you create needs to include `spring-ws-core` as a dependency in your build file as well as wsdl4j.
 
 For maven:
 [source,xml,indent=0]
