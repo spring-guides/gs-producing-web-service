@@ -30,3 +30,6 @@ dependency-reduced-pom.xml
 *.idea
 
 README.html
+
+request.xml
+output.xml

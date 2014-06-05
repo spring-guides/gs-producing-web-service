@@ -1,7 +1,7 @@
 buildscript {
     repositories {
-        maven { url "http://repo.spring.io/libs-milestone" }
         mavenLocal()
+        mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE")
@@ -14,8 +14,8 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 repositories {
+    mavenLocal()
     mavenCentral()
-    maven { url "http://repo.spring.io/libs-milestone" }
 }
 
 // tag::xsd[]
@@ -70,7 +70,7 @@ jar {
 // tag::dependencies[]
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.ws:spring-ws-core:2.2.0.RC1")
+    compile("org.springframework.ws:spring-ws-core:2.2.0.RELEASE")
     compile("wsdl4j:wsdl4j:1.6.1")
     jaxb("com.sun.xml.bind:jaxb-xjc:2.2.4-1")
     compile(files(genJaxb.classesDir).builtBy(genJaxb))

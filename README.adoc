@@ -109,6 +109,8 @@ To do the same with gradle, first you need to configure JAXB in your build file:
 include::complete/build.gradle[tags=jaxb]
 ----
 
+NOTE: The build file above has `tag` and `end` comments. This is to make it easier to extract bits of it into this guide for more detailed explanation. These comments aren't needed in your own build file.
+
 Next step is to add task `genJaxb` used by gradle to generate Java classes:
 
 [source,java,indent=0]
@@ -146,6 +148,8 @@ include::complete/src/main/java/hello/CountryEndpoint.java[]
 
 The {ResponsePayload}[`@ResponsePayload`] annotation makes Spring WS map the returned value to the response payload.
 
+NOTE: In all of these chunks of code, the `io.spring.guides` classes will report compile-time errors in your IDE unless you have run the task to generate the domain classes based on the WSDL.
+
 == Configure web service beans
 
 Create a new class with Spring WS related beans configuration:
@@ -155,7 +159,8 @@ Create a new class with Spring WS related beans configuration:
 include::complete/src/main/java/hello/WebServiceConfig.java[]
 ----
 
-* Spring WS uses a different servlet type for handling SOAP messages: {MessageDispatcherServlet}[`MessageDispatcherServlet`]. It is important to inject and set {ApplicationContext}[`ApplicationContext`] to {MessageDispatcherServlet}[`MessageDispatcherServlet`]. Without that, Spring WS will not detect Spring beans automatically.
+* Spring WS uses a different servlet type for handling SOAP messages: {MessageDispatcherServlet}[`MessageDispatcherServlet`]. It is important to inject and set {ApplicationContext}[`ApplicationContext`] to {MessageDispatcherServlet}[`MessageDispatcherServlet`]. Without that, Spring WS will not detect Spring beans automatically. 
+* By naming this bean `dispatcherServlet`, it http://docs.spring.io/spring-boot/docs/{spring_boot_version}/reference/htmlsingle/#howto-switch-off-the-spring-mvc-dispatcherservlet[replaces Spring Boot's default `DispatcherServlet` bean].
 * {DefaultMethodEndpointAdapter}[`DefaultMethodEndpointAdapter`] configures annotation driven Spring WS programming model. This makes it possible to use the various annotations like {Endpoint}[`@Endpoint`] mentioned earlier.
 * {DefaultWsdl11Definition}[`DefaultWsdl11Definition`] exposes a standard WSDL 1.1 using {XsdSchema}[`XsdSchema`]
 
@@ -197,11 +202,11 @@ Now that the application is running, you can test it. Create a file `request.xml
 include::complete/request.xml[]
 ----
 
-You can now test this use by performing a `GET`. For example, using the *nix curl tool:
+The are a few options when it comes to testing the SOAP interface. You can use something like http://www.soapui.org[SoapUI] or just use command line tools if you are on a *nix/Mac system as shown below.
 
 [source,plain]
 ----
-$ curl --header "content-type: text/xml" -d @request.xml "http://localhost:8080/ws/"
+$ curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws
 ----
 
 As a result you should see this response:
@@ -222,6 +227,9 @@ As a result you should see this response:
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 ----
+
+NOTE: Odds are that the output will be a compact XML document instead of the nicely formatted one shown above. If you have xmllib2 installed on your system, you can `curl <args above> > output.xml | xmllint --format output.xml` 
+see the results formatted nicely.
 
 == Summary
 
