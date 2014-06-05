@@ -1,7 +1,7 @@
 package hello;
 
-import io.spring.guides.gs_soap_service.Country;
-import io.spring.guides.gs_soap_service.Currency;
+import io.spring.guides.gs_producing_web_service.Country;
+import io.spring.guides.gs_producing_web_service.Currency;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
