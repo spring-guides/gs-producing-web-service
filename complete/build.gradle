@@ -2,9 +2,10 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { url "http://repo.spring.io/release" }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.0.RELEASE")
     }
 }
 
@@ -16,6 +17,7 @@ apply plugin: 'spring-boot'
 repositories {
     mavenLocal()
     mavenCentral()
+    maven { url "http://repo.spring.io/release" }
 }
 
 // tag::xsd[]
@@ -69,8 +71,7 @@ jar {
 
 // tag::dependencies[]
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.ws:spring-ws-core:2.2.0.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter-ws")
     compile("wsdl4j:wsdl4j:1.6.1")
     jaxb("com.sun.xml.bind:jaxb-xjc:2.2.4-1")
     compile(files(genJaxb.classesDir).builtBy(genJaxb))
