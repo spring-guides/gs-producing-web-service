@@ -166,6 +166,9 @@ include::complete/src/main/java/hello/WebServiceConfig.java[]
 
 It's important to notice that you need to specify bean names for {MessageDispatcherServlet}[`MessageDispatcherServlet`] and {DefaultWsdl11Definition}[`DefaultWsdl11Definition`]. Bean names determine the URL under which web service and the generated WSDL file is available. In this case, the WSDL will be available under `http://<host>:<port>/ws/countries.wsdl`.
 
+This configuration also uses the WSDL location servlet transformation `servlet.setTransformWsdlLocations(true)`. If you visit http://localhost:8080/ws/countries.wsdl, the `soap:address` will have the proper address. If you instead
+visit the WSDL from the public facing IP address assigned to your machine, you will see that address instead.
+
 == Make the application executable
 
 Although it is possible to package this service as a traditional link:/understanding/WAR[WAR] file for deployment to an external application server, the simpler approach demonstrated below creates a standalone application. You package everything in a single, executable JAR file, driven by a good old Java `main()` method. Along the way, you use Spring's support for embedding the link:/understanding/Tomcat[Tomcat] servlet container as the HTTP runtime, instead of deploying to an external instance.
@@ -213,18 +216,19 @@ As a result you should see this response:
 
 [source,xml]
 ----
+<?xml version="1.0"?>
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
-    <SOAP-ENV:Header/>
-    <SOAP-ENV:Body>
-        <ns3:getCountryResponse xmlns:ns3="http://spring.io/guides/gs-soap-service">
-            <country>
-                <name>Spain</name>
-                <population>46704314</population>
-                <capital>Madrid</capital>
-                <currency>EUR</currency>
-            </country>
-        </ns3:getCountryResponse>
-    </SOAP-ENV:Body>
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <ns2:getCountryResponse xmlns:ns2="http://spring.io/guides/gs-producing-web-service">
+      <ns2:country>
+        <ns2:name>Spain</ns2:name>
+        <ns2:population>46704314</ns2:population>
+        <ns2:capital>Madrid</ns2:capital>
+        <ns2:currency>EUR</ns2:currency>
+      </ns2:country>
+    </ns2:getCountryResponse>
+  </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 ----
 
