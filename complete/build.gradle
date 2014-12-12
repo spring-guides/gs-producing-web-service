@@ -58,6 +58,10 @@ task genJaxb {
 }
 // end::xsd[]
 
+task afterEclipseImport {
+	dependsOn "genJaxb"
+}
+
 // tag::jaxb[]
 configurations {
     jaxb
