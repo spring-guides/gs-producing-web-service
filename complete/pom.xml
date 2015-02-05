@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.1.10.RELEASE</version>
+		<version>1.2.1.RELEASE</version>
 	</parent>
 
 	<dependencies>
@@ -22,9 +22,13 @@
 		<dependency>
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
-			<version>1.6.1</version>
 		</dependency>
 		<!-- end::springws[] -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<properties>
