@@ -1,8 +1,6 @@
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
-        maven { url "https://repo.spring.io/libs-release" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
@@ -15,9 +13,7 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    maven { url "https://repo.spring.io/libs-release" }
 }
 
 // tag::xsd[]
