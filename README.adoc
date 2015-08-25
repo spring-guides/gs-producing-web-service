@@ -230,3 +230,6 @@ Congratulations! You've developed a SOAP-based service using Spring Web Services
 
 
 
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc[]
+
