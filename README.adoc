@@ -121,7 +121,7 @@ include::complete/src/main/java/hello/CountryRepository.java[]
 
 == Create country service endpoint
 
-To create a service endpoint, you only need a POJO with a few Spring WS annotations to handle the incoming SOAP requests.
+To create a service endpoint, you only need a link:/understanding/POJO[POJO] with a few Spring WS annotations to handle the incoming SOAP requests.
 
 [source,java]
 ----
