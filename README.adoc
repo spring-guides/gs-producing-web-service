@@ -210,7 +210,7 @@ As a result you should see this response:
 </SOAP-ENV:Envelope>
 ----
 
-NOTE: Odds are that the output will be a compact XML document instead of the nicely formatted one shown above. If you have xmllib2 installed on your system, you can `curl -s <args above> | xmllint --format -`
+NOTE: Odds are that the output will be a compact XML document instead of the nicely formatted one shown above. If you have xmllib2 installed on your system, you can `curl -fsSL --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws > output.xml and xmllint --format output.xml`
 see the results formatted nicely.
 
 == Summary
