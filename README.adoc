@@ -196,9 +196,29 @@ include::complete/request.xml[]
 
 The are a few options when it comes to testing the SOAP interface. You can use something like http://www.soapui.org[SoapUI] or just use command line tools if you are on a *nix/Mac system as shown below.
 
-[source,plain]
+[source,bash]
 ----
-$ curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws
+# Use data from file
+curl --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws
+----
+
+[source,bash]
+----
+# Use inline XML data
+curl <<-EOF -fsSL -H "content-type: text/xml" -d @- http://localhost:8080/ws \
+  > target/response.xml && xmllint --format target/response.xml
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                                  xmlns:gs="http://spring.io/guides/gs-producing-web-service">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gs:getCountryRequest>
+         <gs:name>Spain</gs:name>
+      </gs:getCountryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+EOF
 ----
 
 As a result you should see this response:
