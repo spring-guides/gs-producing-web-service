@@ -214,7 +214,7 @@ As a result you should see this response:
 </SOAP-ENV:Envelope>
 ----
 
-NOTE: Odds are that the output will be a compact XML document instead of the nicely formatted one shown above. If you have xmllib2 installed on your system, you can `curl <args above> > output.xml | xmllint --format output.xml` 
+NOTE: Odds are that the output will be a compact XML document instead of the nicely formatted one shown above. If you have xmllib2 installed on your system, you can `curl -s <args above> | xmllint --format -`
 see the results formatted nicely.
 
 == Summary
