@@ -28,6 +28,3 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
-}
