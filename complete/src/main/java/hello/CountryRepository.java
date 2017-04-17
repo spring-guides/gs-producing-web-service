@@ -21,7 +21,7 @@ public class CountryRepository {
 		spain.setCurrency(Currency.EUR);
 		spain.setPopulation(46704314);
 
-		countries.put(spain.getName(),spain);
+		countries.put(spain.getName(), spain);
 
 		Country poland = new Country();
 		poland.setName("Poland");
@@ -29,7 +29,7 @@ public class CountryRepository {
 		poland.setCurrency(Currency.PLN);
 		poland.setPopulation(38186860);
 
-		countries.put(poland.getName(),poland);
+		countries.put(poland.getName(), poland);
 
 		Country uk = new Country();
 		uk.setName("United Kingdom");
