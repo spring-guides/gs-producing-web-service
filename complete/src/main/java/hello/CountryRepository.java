@@ -1,8 +1,8 @@
 package hello;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.spring.guides.gs_producing_web_service.Country;
 import io.spring.guides.gs_producing_web_service.Currency;
@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 
 @Component
 public class CountryRepository {
-	private static final List<Country> countries = new ArrayList<Country>();
+	private static final Map<String, Country> countries = new HashMap<>();
 
 	@PostConstruct
 	public void initData() {
@@ -21,7 +21,7 @@ public class CountryRepository {
 		spain.setCurrency(Currency.EUR);
 		spain.setPopulation(46704314);
 
-		countries.add(spain);
+		countries.put("Spain",spain);
 
 		Country poland = new Country();
 		poland.setName("Poland");
@@ -29,7 +29,7 @@ public class CountryRepository {
 		poland.setCurrency(Currency.PLN);
 		poland.setPopulation(38186860);
 
-		countries.add(poland);
+		countries.put("Poland",poland);
 
 		Country uk = new Country();
 		uk.setName("United Kingdom");
@@ -37,20 +37,11 @@ public class CountryRepository {
 		uk.setCurrency(Currency.GBP);
 		uk.setPopulation(63705000);
 
-		countries.add(uk);
+		countries.put("United Kingdom", uk);
 	}
 
 	public Country findCountry(String name) {
-		Assert.notNull(name);
-
-		Country result = null;
-
-		for (Country country : countries) {
-			if (name.equals(country.getName())) {
-				result = country;
-			}
-		}
-
-		return result;
+		Assert.notNull(name, "The country's name must not be null");
+		return countries.get(name);
 	}
 }
