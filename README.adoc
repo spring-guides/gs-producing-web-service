@@ -147,7 +147,7 @@ Create a new class with Spring WS related beans configuration:
 include::complete/src/main/java/hello/WebServiceConfig.java[]
 ----
 
-* Spring WS uses a different servlet type for handling SOAP messages: {MessageDispatcherServlet}[`MessageDispatcherServlet`]. It is important to inject and set {ApplicationContext}[`ApplicationContext`] to {MessageDispatcherServlet}[`MessageDispatcherServlet`]. Without that, Spring WS will not detect Spring beans automatically. 
+* Spring WS uses a different servlet type for handling SOAP messages: {MessageDispatcherServlet}[`MessageDispatcherServlet`]. It is important to inject and set {ApplicationContext}[`ApplicationContext`] to {MessageDispatcherServlet}[`MessageDispatcherServlet`]. Without that, Spring WS will not detect Spring beans automatically.
 * By naming this bean `messageDispatcherServlet`, it does not http://docs.spring.io/spring-boot/docs/{spring_boot_version}/reference/htmlsingle/#howto-switch-off-the-spring-mvc-dispatcherservlet[replace Spring Boot's default `DispatcherServlet` bean].
 * {DefaultMethodEndpointAdapter}[`DefaultMethodEndpointAdapter`] configures annotation driven Spring WS programming model. This makes it possible to use the various annotations like {Endpoint}[`@Endpoint`] mentioned earlier.
 * {DefaultWsdl11Definition}[`DefaultWsdl11Definition`] exposes a standard WSDL 1.1 using {XsdSchema}[`XsdSchema`]
@@ -221,8 +221,11 @@ see the results formatted nicely.
 
 Congratulations! You've developed a SOAP-based service using Spring Web Services.
 
+== See Also
 
+The following guides may also be helpful:
 
+* https://spring.io/guides/gs/consuming-web-service/[Consuming a SOAP web service]
+* https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc[]
-
