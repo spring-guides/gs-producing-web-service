@@ -4,6 +4,7 @@
    <soapenv:Body>
       <gs:getCountryRequest>
          <gs:name>Spain</gs:name>
+		 <gs:name>Poland</gs:name>
       </gs:getCountryRequest>
    </soapenv:Body>
 </soapenv:Envelope>

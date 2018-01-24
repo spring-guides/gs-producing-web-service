@@ -50,7 +50,7 @@ public class ApplicationIntegrationTests {
     public void testSendAndReceive() {
         WebServiceTemplate ws = new WebServiceTemplate(marshaller);
         GetCountryRequest request = new GetCountryRequest();
-        request.setName("Spain");
+        request.getName().add("Spain");
 
         assertThat(ws.marshalSendAndReceive("http://localhost:"
                 + port + "/ws", request)).isNotNull();

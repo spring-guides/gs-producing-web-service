@@ -4,7 +4,7 @@
     <xs:element name="getCountryRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="name" type="xs:string"/>
+                <xs:element name="name" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -12,7 +12,7 @@
     <xs:element name="getCountryResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="country" type="tns:country"/>
+                <xs:element name="country" minOccurs="0" maxOccurs="unbounded" type="tns:country"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

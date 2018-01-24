@@ -24,8 +24,11 @@ public class CountryEndpoint {
 	@ResponsePayload
 	public GetCountryResponse getCountry(@RequestPayload GetCountryRequest request) {
 		GetCountryResponse response = new GetCountryResponse();
-		response.setCountry(countryRepository.findCountry(request.getName()));
-
+		
+		for(String name : request.getName()){
+			(response.getCountry()).add(countryRepository.findCountry(name));
+		}
+		
 		return response;
 	}
 }
