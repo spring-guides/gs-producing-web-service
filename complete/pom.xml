@@ -46,7 +46,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>1.6</version>
+				<version>2.5.0</version>
 				<executions>
 					<execution>
 						<id>xjc</id>
@@ -56,9 +56,9 @@
 					</execution>
 				</executions>
 				<configuration>
-					<schemaDirectory>${project.basedir}/src/main/resources/</schemaDirectory>
-					<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-					<clearOutputDir>false</clearOutputDir>
+					<sources>
+						<source>${project.basedir}/src/main/resources/</source>
+					</sources>
 				</configuration>
 			</plugin>
 			<!-- end::xsd[] -->
