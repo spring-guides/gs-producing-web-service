@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.2.RELEASE'
+	id 'org.springframework.boot' version '2.1.8.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
 }
@@ -32,8 +32,8 @@ task genJaxb {
                 produces(dir: sourcesDir, includes: "**/*.java")
             }
 
-            javac(destdir: classesDir, source: 1.6, target: 1.6, debug: true,
-                    debugLevel: "lines,vars,source", includeantruntime: false,
+            javac(destdir: classesDir, source: 1.8, target: 1.8, debug: true,
+                    debugLevel: "lines,vars,source",
                     classpath: configurations.jaxb.asPath) {
                 src(path: sourcesDir)
                 include(name: "**/*.java")
@@ -58,24 +58,12 @@ configurations {
 bootJar {
     baseName = 'gs-producing-web-service'
     version =  '0.1.0'
+    from genJaxb.classesDir
 }
 // end::jaxb[]
 
 // tag::dependencies[]
 dependencies {
-<<<<<<< HEAD
-    compile("org.springframework.boot:spring-boot-starter-web-services")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
-    compile("wsdl4j:wsdl4j:1.6.1")
-    jaxb("org.glassfish.jaxb:jaxb-xjc:2.2.11")
-    compile(files(genJaxb.classesDir).builtBy(genJaxb))
-
-    // For Java 11:
-    implementation 'org.glassfish.jaxb:jaxb-runtime'
-}
-// end::dependencies[]
-// end::jaxb[]
-=======
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
 	implementation 'wsdl4j:wsdl4j:1.6.1'
@@ -84,4 +72,3 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 // end::dependencies[]
->>>>>>> Use the Spring Initializr

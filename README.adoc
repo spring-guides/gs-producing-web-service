@@ -19,172 +19,269 @@
 :source-highlighter: prettify
 :project_id: gs-soap-service
 
-This guide walks you through the process of creating a SOAP-based web service server with Spring.
+This guide walks you through the process of creating a SOAP-based web service server with
+Spring.
 
-== What you'll build
+== What You Will build
 
-You will build a server that exposes data from various European countries using a WSDL-based SOAP web service.
+You will build a server that exposes data from various European countries by using a
+WSDL-based SOAP web service.
 
-NOTE: To simplify the example, you will use hardcoded data for the United Kingdom, Spain and Poland.
+NOTE: To simplify the example, you will use hardcoded data for the United Kingdom, Spain,
+and Poland.
 
-
-== What you'll need
+== What You Need
 
 :java_version: 1.8
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc[]
 
+[[scratch]]
+== Starting with Spring Initializr
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-gradle.adoc[]
+For all Spring applications, you should start with the https://start.spring.io[Spring
+Initializr]. The Initializr offers a fast way to pull in all the dependencies you need for
+an application and does a lot of the set up for you. This example needs the Spring Web and
+Spring Web Services dependencies. The following image shows the Initializr set up for this
+sample project:
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-maven.adoc[]
+image::images/initializr.png[]
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-sts.adoc[]
+NOTE: The preceding image shows the Initializr with Maven chosen as the build tool. You
+can also use Gradle. It also shows values of `com.example` and `producing-web-service`
+as the Group and Artifact, respectively. You will use those values throughout the rest of
+this sample.
 
+The following listing shows the `pom.xml` file that is created when you choose Maven:
 
+====
+[src,xml]
+----
+include::initial/pom.xml[]
+----
+====
+
+The following listing shows the `build.gradle` file that is created when you choose Gradle:
+
+====
+[src,java]
+----
+include::initial/build.gradle[]
+----
+====
+
+NOTE: Both the `pom.xml` and `build.gradle` files show additional build information, which
+you will add in the next step.
 
 [[initial]]
-== Add Spring-WS dependency
+== Add the Spring-WS dependency
 
-The project you create needs to include `spring-ws-core` as a dependency in your build file as well as wsdl4j.
+The project needs to include `spring-ws-core` and `wsdl4j` as dependencies in your build
+file.
 
-For maven:
+The following example shows the changes you need to make to the `pom.xml` file if you use
+Maven:
+
+====
 [source,xml,indent=0]
 ----
 include::complete/pom.xml[tags=springws]
 ----
+====
 
-For gradle:
-[source,java,tabsize=2,indent=0]
+The following example shows the changes you need to make to the `build.gradle` file if
+you use Gradle:
+
+====
+[source,java,indent=0]
 ----
 include::complete/build.gradle[tags=dependencies]
 ----
+====
 
-== Create an XML schema to define the domain
+== Create an XML Schema to Define the Domain
 
-The web service domain is defined in an XML schema file (XSD) that Spring-WS will export automatically as a WSDL.
+The web service domain is defined in an XML schema file (XSD) that Spring-WS will
+automatically export as a WSDL.
 
-Create an XSD file with operations to return a country's **name**, **population**, **capital** and **currency**:
+Create an XSD file with operations to return a country's `name`, `population`, `capital`,
+and `currency`. The following listing (from `src/main/resources/countries.xsd`) shows the
+necessary XSD file:
 
-`src/main/resources/countries.xsd`
+====
 [source,xml,indent=0]
 ----
 include::complete/src/main/resources/countries.xsd[]
 ----
+====
 
-== Generate domain classes based on an XML schema
+== Generate Domain Classes Based on an XML Schema
 
-The next step is to generate Java classes from the XSD file. The right approach is do this automatically during build time using a maven or gradle plugin.
+The next step is to generate Java classes from the XSD file. The right approach is to do
+this automatically during build time by using a Maven or Gradle plugin.
 
-Plugin configuration for maven:
+The following listing shows the necessary plugin configuration for Maven:
 
+====
 [source,xml,indent=0]
 ----
 include::complete/pom.xml[tags=xsd]
 ----
+====
 
-Generated classes are placed in `target/generated-sources/jaxb/` directory.
+Generated classes are placed in the `target/generated-sources/jaxb/` directory.
 
-To do the same with gradle, first you need to configure JAXB in your build file:
+To do the same with Gradle, you first need to configure JAXB in your build file, as the
+following listing shows:
 
-[source,java,tabsize=2,indent=0]
+====
+[source,java,indent=0]
 ----
 include::complete/build.gradle[tags=jaxb]
 ----
+====
 
-NOTE: The build file above has `tag` and `end` comments. This is to make it easier to extract bits of it into this guide for more detailed explanation. These comments aren't needed in your own build file.
+NOTE: The build files have `tag` and `end` comments. These tags make it easier to extract
+bits of it into this guide for a more detailed explanation. You do not need these comments
+in your own build file.
 
-Next step is to add task `genJaxb` used by gradle to generate Java classes:
+The next step is to add the `genJaxb` task, which Gradle usesto generate Java classes. The
+following listing shows the necesary addition:
 
-[source,java,tabsize=2,indent=0]
+====
+[source,java,indent=0]
 ----
 include::complete/build.gradle[tags=xsd]
 ----
+====
 
-As gradle does not have a JAXB plugin (yet), it involves an ant task, which makes it a bit more complex than in maven.
+Because Gradle does not have a JAXB plugin (yet), it involves an Ant task, which makes it
+a bit more complex than in Maven.
 
-In both cases, the JAXB domain object generation process has been wired into the build tool’s lifecycle so there are no extra steps to run.
+In both cases, the JAXB domain object generation process has been wired into the build
+tool’s lifecycle, so there are no extra steps to run.
 
-== Create country repository
+== Create Country Repository
 
-In order to provide data to the web service, create a country repository. In this guide you create a dummy country repository implementation with hardcoded data.
+In order to provide data to the web service, create a country repository. In this guide,
+you create a dummy country repository implementation with hardcoded data. The following
+listing (from `src/main/java/com/example/producingwebservice/CountryRepository.java`)
+shows how to do so:
 
-[source,java,tabsize=2]
+====
+[source,java]
 ----
-include::complete/src/main/java/hello/CountryRepository.java[]
+include::complete/src/main/java/com/example/producingwebservice/CountryRepository.java[]
 ----
+====
 
-== Create country service endpoint
+== Create Country Service Endpoint
 
-To create a service endpoint, you only need a link:/understanding/POJO[POJO] with a few Spring WS annotations to handle the incoming SOAP requests.
+To create a service endpoint, you need only a POJO with a few Spring WS annotations to
+handle the incoming SOAP requests. The following listing (from
+`src/main/java/com/example/producingwebservice/CountryEndpoint.java`) shows such a class:
 
-[source,java,tabsize=2]
+====
+[source,java]
 ----
-include::complete/src/main/java/hello/CountryEndpoint.java[]
+include::complete/src/main/java/com/example/producingwebservice/CountryEndpoint.java[]
 ----
+====
 
-{Endpoint}[`@Endpoint`] registers the class with Spring WS as a potential candidate for processing incoming SOAP messages.
+The {Endpoint}[`@Endpoint`] annotation registers the class with Spring WS as a potential
+candidate for processing incoming SOAP messages.
 
-{PayloadRoot}[`@PayloadRoot`] is then used by Spring WS to pick the handler method based on the message's **namespace** and **localPart**.
+The {PayloadRoot}[`@PayloadRoot`] annotation is then used by Spring WS to pick the handler
+method, based on the message's `namespace` and `localPart`.
 
-{RequestPayload}[`@RequestPayload`] indicates that the incoming message will be mapped to the method's `request` parameter.
+The {RequestPayload}[`@RequestPayload`] annotation indicates that the incoming message
+will be mapped to the method's `request` parameter.
 
-The {ResponsePayload}[`@ResponsePayload`] annotation makes Spring WS map the returned value to the response payload.
+The {ResponsePayload}[`@ResponsePayload`] annotation makes Spring WS map the returned
+value to the response payload.
 
-NOTE: In all of these chunks of code, the `io.spring.guides` classes will report compile-time errors in your IDE unless you have run the task to generate the domain classes based on the WSDL.
+NOTE: In all of these chunks of code, the `io.spring.guides` classes will report
+compile-time errors in your IDE unless you have run the task to generate the domain
+classes based on the WSDL.
 
-== Configure web service beans
+== Configure Web Service Beans
 
-Create a new class with Spring WS related beans configuration:
+Create a new class with Spring WS-related beans configuration, as the following listing
+(from `src/main/java/com/example/producingwebservice/WebServiceConfig.java`) shows:
 
-[source,java,tabsize=2]
+====
+[source,java]
 ----
-include::complete/src/main/java/hello/WebServiceConfig.java[]
+include::complete/src/main/java/com/example/producingwebservice/WebServiceConfig.java[]
 ----
+====
 
-* Spring WS uses a different servlet type for handling SOAP messages: {MessageDispatcherServlet}[`MessageDispatcherServlet`]. It is important to inject and set {ApplicationContext}[`ApplicationContext`] to {MessageDispatcherServlet}[`MessageDispatcherServlet`]. Without that, Spring WS will not detect Spring beans automatically.
-* By naming this bean `messageDispatcherServlet`, it does not http://docs.spring.io/spring-boot/docs/{spring_boot_version}/reference/htmlsingle/#howto-switch-off-the-spring-mvc-dispatcherservlet[replace Spring Boot's default `DispatcherServlet` bean].
-* {DefaultMethodEndpointAdapter}[`DefaultMethodEndpointAdapter`] configures annotation driven Spring WS programming model. This makes it possible to use the various annotations like {Endpoint}[`@Endpoint`] mentioned earlier.
-* {DefaultWsdl11Definition}[`DefaultWsdl11Definition`] exposes a standard WSDL 1.1 using {XsdSchema}[`XsdSchema`]
+* Spring WS uses a different servlet type for handling SOAP messages:
+{MessageDispatcherServlet}[`MessageDispatcherServlet`]. It is important to inject and set
+{ApplicationContext}[`ApplicationContext`] to
+{MessageDispatcherServlet}[`MessageDispatcherServlet`]. Without that, Spring WS will not
+automatically detect Spring beans.
+* Naming this bean `messageDispatcherServlet` does not replace Spring Boot's
+http://docs.spring.io/spring-boot/docs/{spring_boot_version}/reference/htmlsingle/#howto-switch-off-the-spring-mvc-dispatcherservlet[default `DispatcherServlet` bean].
+* {DefaultMethodEndpointAdapter}[`DefaultMethodEndpointAdapter`] configures the
+annotation-driven Spring WS programming model. This makes it possible to use the various
+annotations, such as {Endpoint}[`@Endpoint`] (mentioned earlier).
+* {DefaultWsdl11Definition}[`DefaultWsdl11Definition`] exposes a standard WSDL 1.1 by
+using {XsdSchema}[`XsdSchema`]
 
-It's important to notice that you need to specify bean names for {MessageDispatcherServlet}[`MessageDispatcherServlet`] and {DefaultWsdl11Definition}[`DefaultWsdl11Definition`]. Bean names determine the URL under which web service and the generated WSDL file is available. In this case, the WSDL will be available under `http://<host>:<port>/ws/countries.wsdl`.
+IMPORTANT: You need to specify bean names for
+{MessageDispatcherServlet}[`MessageDispatcherServlet`] and
+{DefaultWsdl11Definition}[`DefaultWsdl11Definition`]. Bean names determine the URL under
+which the web service and the generated WSDL file are available. In this case, the WSDL
+will be available under `http://<host>:<port>/ws/countries.wsdl`.
 
-This configuration also uses the WSDL location servlet transformation `servlet.setTransformWsdlLocations(true)`. If you visit http://localhost:8080/ws/countries.wsdl, the `soap:address` will have the proper address. If you instead
-visit the WSDL from the public facing IP address assigned to your machine, you will see that address instead.
+This configuration also uses the WSDL location servlet transformation:
+`servlet.setTransformWsdlLocations(true)`. If you visit
+http://localhost:8080/ws/countries.wsdl, the `soap:address` will have the proper address.
+If you instead
+visit the WSDL from the public facing IP address assigned to your machine, you will see
+that address instead.
 
-== Make the application executable
+== Make the Application Executable
 
-Although it is possible to package this service as a traditional link:/understanding/WAR[WAR] file for deployment to an external application server, the simpler approach demonstrated below creates a standalone application. You package everything in a single, executable JAR file, driven by a good old Java `main()` method. Along the way, you use Spring's support for embedding the link:/understanding/Tomcat[Tomcat] servlet container as the HTTP runtime, instead of deploying to an external instance.
+Spring Boot creates an application class for you. In this case, it needs no further
+modification. You can use it to run this application. The following listing (from
+`src/main/java/com/example/producingwebservice/ProducingWebServiceApplication.java`) shows
+the application class:
 
-
-`src/main/java/hello/Application.java`
-[source,java,tabsize=2]
+====
+[source,java]
 ----
-include::complete/src/main/java/hello/Application.java[]
+include::complete/src/main/java/com/example/producingwebservice/ProducingWebServiceApplication.java[]
 ----
+====
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-application.adoc[]
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-application-new-path.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_subhead.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_with_both.adoc[]
 
-
 Logging output is displayed. The service should be up and running within a few seconds.
 
+== Test the Application
 
-== Test the application
+Now that the application is running, you can test it. Create a file called `request.xml`
+that contains the following SOAP request:
 
-Now that the application is running, you can test it. Create a file `request.xml` containing the following SOAP request:
-
+====
 [source,xml]
 ----
 include::complete/request.xml[]
 ----
+====
 
-The are a few options when it comes to testing the SOAP interface. You can use something like http://www.soapui.org[SoapUI] or just use command line tools if you are on a *nix/Mac system as shown below.
+The are a few options when it comes to testing the SOAP interface. You can use something
+similar to http://www.soapui.org[SoapUI] or use command-line tools if you are on a
+*nix/Mac system. The following example uses curl from the command line:
 
+====
 [source,bash]
 ----
 # Use data from file
@@ -209,9 +306,11 @@ curl <<-EOF -fsSL -H "content-type: text/xml" -d @- http://localhost:8080/ws \
 
 EOF
 ----
+====
 
-As a result you should see this response:
+As a result, you should see the following response:
 
+====
 [source,xml]
 ----
 <?xml version="1.0"?>
@@ -229,13 +328,14 @@ As a result you should see this response:
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 ----
+====
 
 NOTE: Odds are that the output will be a compact XML document instead of the nicely formatted one shown above. If you have xmllib2 installed on your system, you can `curl -fsSL --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws > output.xml and xmllint --format output.xml`
 see the results formatted nicely.
 
 == Summary
 
-Congratulations! You've developed a SOAP-based service using Spring Web Services.
+Congratulations! You have developed a SOAP-based service with Spring Web Services.
 
 == See Also
 

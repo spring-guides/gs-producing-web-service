@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package hello;
+package com.example.producingwebservice;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -32,7 +32,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ApplicationIntegrationTests {
+public class ProducingWebServiceApplicationIntegrationTests {
 
 	private Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
 
