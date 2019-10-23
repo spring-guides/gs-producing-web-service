@@ -16,21 +16,20 @@
 
 package com.example.producingwebservice;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.is;
 
 import io.spring.guides.gs_producing_web_service.GetCountryRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ClassUtils;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ProducingWebServiceApplicationIntegrationTests {
 
@@ -39,7 +38,7 @@ public class ProducingWebServiceApplicationIntegrationTests {
 	@LocalServerPort
 	private int port = 0;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception {
 		marshaller.setPackagesToScan(ClassUtils.getPackageName(GetCountryRequest.class));
 		marshaller.afterPropertiesSet();
@@ -52,6 +51,6 @@ public class ProducingWebServiceApplicationIntegrationTests {
 		request.setName("Spain");
 
 		assertThat(ws.marshalSendAndReceive("http://localhost:"
-				+ port + "/ws", request)).isNotNull();
-	}
+				+ port + "/ws", request) != null, is(true));
+    }
 }
