@@ -16,12 +16,12 @@
 
 package com.example.producingwebservice;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import io.spring.guides.gs_producing_web_service.GetCountryRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import io.spring.guides.gs_producing_web_service.GetCountryRequest;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -51,6 +51,6 @@ public class ProducingWebServiceApplicationIntegrationTests {
 		request.setName("Spain");
 
 		assertThat(ws.marshalSendAndReceive("http://localhost:"
-				+ port + "/ws", request) != null, is(true));
+				+ port + "/ws", request) != null);
     }
 }
