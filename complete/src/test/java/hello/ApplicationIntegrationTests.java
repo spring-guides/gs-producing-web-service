@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,24 +34,24 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ApplicationIntegrationTests {
 
-    private Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+	private Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
 
-    @LocalServerPort
-    private int port = 0;
+	@LocalServerPort
+	private int port = 0;
 
-    @Before
-    public void init() throws Exception {
-        marshaller.setPackagesToScan(ClassUtils.getPackageName(GetCountryRequest.class));
-        marshaller.afterPropertiesSet();
-    }
+	@Before
+	public void init() throws Exception {
+		marshaller.setPackagesToScan(ClassUtils.getPackageName(GetCountryRequest.class));
+		marshaller.afterPropertiesSet();
+	}
 
-    @Test
-    public void testSendAndReceive() {
-        WebServiceTemplate ws = new WebServiceTemplate(marshaller);
-        GetCountryRequest request = new GetCountryRequest();
-        request.setName("Spain");
+	@Test
+	public void testSendAndReceive() {
+		WebServiceTemplate ws = new WebServiceTemplate(marshaller);
+		GetCountryRequest request = new GetCountryRequest();
+		request.setName("Spain");
 
-        assertThat(ws.marshalSendAndReceive("http://localhost:"
-                + port + "/ws", request)).isNotNull();
-    }
+		assertThat(ws.marshalSendAndReceive("http://localhost:"
+				+ port + "/ws", request)).isNotNull();
+	}
 }

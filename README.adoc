@@ -56,7 +56,7 @@ include::complete/pom.xml[tags=springws]
 ----
 
 For gradle:
-[source,java,indent=0]
+[source,java,tabsize=2,indent=0]
 ----
 include::complete/build.gradle[tags=dependencies]
 ----
@@ -88,7 +88,7 @@ Generated classes are placed in `target/generated-sources/jaxb/` directory.
 
 To do the same with gradle, first you need to configure JAXB in your build file:
 
-[source,java,indent=0]
+[source,java,tabsize=2,indent=0]
 ----
 include::complete/build.gradle[tags=jaxb]
 ----
@@ -97,7 +97,7 @@ NOTE: The build file above has `tag` and `end` comments. This is to make it easi
 
 Next step is to add task `genJaxb` used by gradle to generate Java classes:
 
-[source,java,indent=0]
+[source,java,tabsize=2,indent=0]
 ----
 include::complete/build.gradle[tags=xsd]
 ----
@@ -110,7 +110,7 @@ In both cases, the JAXB domain object generation process has been wired into the
 
 In order to provide data to the web service, create a country repository. In this guide you create a dummy country repository implementation with hardcoded data.
 
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/hello/CountryRepository.java[]
 ----
@@ -119,7 +119,7 @@ include::complete/src/main/java/hello/CountryRepository.java[]
 
 To create a service endpoint, you only need a link:/understanding/POJO[POJO] with a few Spring WS annotations to handle the incoming SOAP requests.
 
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/hello/CountryEndpoint.java[]
 ----
@@ -138,7 +138,7 @@ NOTE: In all of these chunks of code, the `io.spring.guides` classes will report
 
 Create a new class with Spring WS related beans configuration:
 
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/hello/WebServiceConfig.java[]
 ----
@@ -159,7 +159,7 @@ Although it is possible to package this service as a traditional link:/understan
 
 
 `src/main/java/hello/Application.java`
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/hello/Application.java[]
 ----
