@@ -67,7 +67,6 @@ configurations {
 bootJar {
     baseName = 'gs-producing-web-service'
     version =  '0.1.0'
-    from genJaxb.classesDir
 }
 
 // tag::dependencies[]
