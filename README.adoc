@@ -138,8 +138,10 @@ NOTE: The build files have `tag` and `end` comments. These tags make it easier t
 bits of it into this guide for a more detailed explanation. You do not need these comments
 in your own build file.
 
-The next step is to add the `genJaxb` task, which Gradle usesto generate Java classes. The
-following listing shows the necesary addition:
+The next step is to add the `genJaxb` task, which Gradle uses to generate Java classes.
+We need to configure gradle to find these generated Java classes in `build/generated-sources/jaxb`
+and add `genJaxb` as a dependency of `compileJava` task.
+The following listing shows the necessary addition:
 
 ====
 [source,java,indent=0]
