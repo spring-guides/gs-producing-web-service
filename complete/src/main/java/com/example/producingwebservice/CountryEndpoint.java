@@ -11,21 +11,21 @@ import io.spring.guides.gs_producing_web_service.GetCountryResponse;
 
 @Endpoint
 public class CountryEndpoint {
-	private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
+    private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
 
-	private CountryRepository countryRepository;
+    private CountryRepository countryRepository;
 
-	@Autowired
-	public CountryEndpoint(CountryRepository countryRepository) {
-		this.countryRepository = countryRepository;
-	}
+    @Autowired
+    public CountryEndpoint(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
+    }
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCountryRequest")
-	@ResponsePayload
-	public GetCountryResponse getCountry(@RequestPayload GetCountryRequest request) {
-		GetCountryResponse response = new GetCountryResponse();
-		response.setCountry(countryRepository.findCountry(request.getName()));
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCountryRequest")
+    @ResponsePayload
+    public GetCountryResponse getCountry(@RequestPayload GetCountryRequest request) {
+        GetCountryResponse response = new GetCountryResponse();
+        response.setCountry(countryRepository.findCountry(request.getName()));
 
-		return response;
-	}
+        return response;
+    }
 }
