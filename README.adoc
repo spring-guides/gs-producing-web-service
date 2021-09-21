@@ -40,31 +40,7 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 [[scratch]]
 == Starting with Spring Initializr
 
-If you use Maven, visit the https://start.spring.io/#!type=maven-project&language=java&platformVersion=2.4.3.RELEASE&packaging=jar&jvmVersion=1.8&groupId=com.example&artifactId=producing-web-service&name=producing-web-service&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.producing-web-service&dependencies=web,web-services[Spring Initializr] to generate a new project with the required dependencies (Spring Web and Spring Web Services).
-
-The following listing shows the `pom.xml` file that is created when you choose Maven:
-
-====
-[src,xml]
-----
-include::initial/pom.xml[]
-----
-====
-
-If you use Gradle, visit the https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.4.3.RELEASE&packaging=jar&jvmVersion=1.8&groupId=com.example&artifactId=producing-web-service&name=producing-web-service&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.producing-web-service&dependencies=web,web-services[Spring Initializr] to generate a new project with the required dependencies (Spring Web and Spring Web Services).
-
-The following listing shows the `build.gradle` file that is created when you choose Gradle:
-
-====
-[src,java]
-----
-include::initial/build.gradle[]
-----
-====
-
-=== Manual Initialization (optional)
-
-If you want to initialize the project manually rather than use the links shown earlier, follow the steps given below:
+To initialize the project:
 
 . Navigate to https://start.spring.io.
 This service pulls in all the dependencies you need for an application and does most of the setup for you.
@@ -75,8 +51,10 @@ This service pulls in all the dependencies you need for an application and does 
 
 NOTE: If your IDE has the Spring Initializr integration, you can complete this process from your IDE.
 
-NOTE: Both the `pom.xml` and `build.gradle` files show additional build information, which
+NOTE: Both the `pom.xml` and `build.gradle` files need additional build information, which
 you will add in the next step.
+
+NOTE: You can also fork the project from Github and open it in your IDE or other editor.
 
 [[initial]]
 == Add the Spring-WS dependency
