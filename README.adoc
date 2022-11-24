@@ -319,6 +319,36 @@ As a result, you should see the following response:
 NOTE: Odds are that the output will be a compact XML document instead of the nicely formatted one shown above. If you have xmllib2 installed on your system, you can `curl -fsSL --header "content-type: text/xml" -d @request.xml http://localhost:8080/ws > output.xml and xmllint --format output.xml`
 see the results formatted nicely.
 
+== Java 11 Caveat
+
+When running the project with java 11 and using gradle, the previous test might
+answer an error code:
+
+====
+[source,xml]
+----
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <SOAP-ENV:Fault>
+            <faultcode>SOAP-ENV:Server</faultcode>
+            <faultstring xml:lang="en">Implementation of JAXB-API has not been found on module path or classpath.</faultstring>
+        </SOAP-ENV:Fault>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+----
+====
+
+IMPORTANT: If that happens, either use maven, downgrade your java to 1.8 or double-check
+jaxb dependencies *javax.xml.bind:jaxb-api* and *org.glassfish.jaxb:jaxb-runtime*:
+
+====
+[source,java,indent=0]
+----
+include::complete/build.gradle[tags=dependencies]
+----
+====
+
 == Summary
 
 Congratulations! You have developed a SOAP-based service with Spring Web Services.
