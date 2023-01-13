@@ -14,32 +14,32 @@ repositories {
 
 // tag::xsd[]
 sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-            srcDir 'build/generated-sources/jaxb'
-        }
-    }
+	main {
+		java {
+			srcDir 'src/main/java'
+			srcDir 'build/generated-sources/jaxb'
+		}
+	}
 }
 
 task genJaxb {
-    ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
-    ext.schema = "src/main/resources/countries.xsd"
+	ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+	ext.schema = "src/main/resources/countries.xsd"
 
-    outputs.dir sourcesDir
+	outputs.dir sourcesDir
 
-    doLast() {
-        project.ant {
-            taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
-                    classpath: configurations.jaxb.asPath
-            mkdir(dir: sourcesDir)
+	doLast() {
+		project.ant {
+			taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+					classpath: configurations.jaxb.asPath
+			mkdir(dir: sourcesDir)
 
-            xjc(destdir: sourcesDir, schema: schema) {
-                arg(value: "-wsdl")
-                produces(dir: sourcesDir, includes: "**/*.java")
-            }
-        }
-    }
+			xjc(destdir: sourcesDir, schema: schema) {
+				arg(value: "-wsdl")
+				produces(dir: sourcesDir, includes: "**/*.java")
+			}
+		}
+	}
 }
 
 compileJava.dependsOn genJaxb
@@ -47,12 +47,12 @@ compileJava.dependsOn genJaxb
 
 // tag::jaxb[]
 configurations {
-    jaxb
+	jaxb
 }
 
 bootJar {
-    archiveBaseName = 'gs-producing-web-service'
-    archiveVersion =  '0.1.0'
+	archiveBaseName = 'gs-producing-web-service'
+	archiveVersion =  '0.1.0'
 }
 // end::jaxb[]
 
@@ -60,8 +60,8 @@ bootJar {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
-    implementation 'wsdl4j:wsdl4j'
-    jaxb("org.glassfish.jaxb:jaxb-xjc")
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
+	implementation 'wsdl4j:wsdl4j'
+	jaxb("org.glassfish.jaxb:jaxb-xjc")
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 // end::dependencies[]
