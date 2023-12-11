@@ -1,10 +1,6 @@
 :spring_version: current
 :spring_boot_version: current
 :spring_ws_version: 4.0.0
-:Controller: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Controller.html
-:DispatcherServlet: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/servlet/DispatcherServlet.html
-:SpringApplication: http://docs.spring.io/spring-boot/docs/{spring_boot_version}/api/org/springframework/boot/SpringApplication.html
-:ResponseBody: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/ResponseBody.html
 :Endpoint: http://docs.spring.io/spring-ws/sites/{spring_ws_version}/apidocs/org/springframework/ws/server/endpoint/annotation/Endpoint.html
 :PayloadRoot: http://docs.spring.io/spring-ws/sites/{spring_ws_version}/apidocs/org/springframework/ws/server/endpoint/annotation/PayloadRoot.html
 :RequestPayload: http://docs.spring.io/spring-ws/sites/{spring_ws_version}/apidocs/org/springframework/ws/server/endpoint/annotation/RequestPayload.html
