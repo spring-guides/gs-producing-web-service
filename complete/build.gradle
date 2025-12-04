@@ -1,67 +1,39 @@
 plugins {
-	id 'org.springframework.boot' version '3.3.0'
-	id 'io.spring.dependency-management' version '1.1.5'
 	id 'java'
+	id 'org.springframework.boot' version '4.0.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+	// tag::xjcplugin[]
+	id 'com.github.bjornvester.xjc' version '1.9.0'
+	// end::xjcplugin[]
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
 
 repositories {
 	mavenCentral()
 }
 
-// tag::xsd[]
-sourceSets {
-	main {
-		java {
-			srcDir 'src/main/java'
-			srcDir 'build/generated-sources/jaxb'
-		}
-	}
-}
-
-task genJaxb {
-	ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
-	ext.schema = "src/main/resources/countries.xsd"
-
-	outputs.dir sourcesDir
-
-	doLast() {
-		project.ant {
-			taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
-					classpath: configurations.jaxb.asPath
-			mkdir(dir: sourcesDir)
-
-			xjc(destdir: sourcesDir, schema: schema) {
-				arg(value: "-wsdl")
-				produces(dir: sourcesDir, includes: "**/*.java")
-			}
-		}
-	}
-}
-
-compileJava.dependsOn genJaxb
-// end::xsd[]
-
-// tag::jaxb[]
-configurations {
-	jaxb
-}
-
-bootJar {
-	archiveBaseName = 'gs-producing-web-service'
-	archiveVersion =  '0.1.0'
-}
-// end::jaxb[]
-
-// tag::dependencies[]
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-web-services'
-	implementation 'wsdl4j:wsdl4j'
-	jaxb("org.glassfish.jaxb:jaxb-xjc")
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-webservices'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webservices-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-// end::dependencies[]
+
+// tag::xjcconfig[]
+xjc {
+	xsdDir.set(layout.projectDirectory.dir("src/main/resources/wsdl"))
+}
+// end::xjcconfig[]
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
