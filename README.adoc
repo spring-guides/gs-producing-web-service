@@ -1,10 +1,6 @@
 :spring_version: current
 :spring_boot_version: current
 :spring_ws_api: https://docs.spring.io/spring-ws/docs/current/api
-:Endpoint: {spring_ws_api}/org/springframework/ws/server/endpoint/annotation/Endpoint.html
-:PayloadRoot: {spring_ws_api}/org/springframework/ws/server/endpoint/annotation/PayloadRoot.html
-:RequestPayload: {spring_ws_api}/org/springframework/ws/server/endpoint/annotation/RequestPayload.html
-:ResponsePayload: {spring_ws_api}/org/springframework/ws/server/endpoint/annotation/ResponsePayload.html
 :toc:
 :icons: font
 :source-highlighter: prettify
@@ -28,14 +24,14 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 [[scratch]]
 == Starting with Spring Initializr
 
-You can use this https://start.spring.io/#!type=gradle-project&groupId=com.example&artifactId=producing-web-service&name=producing-web-service&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.producing-web-service&dependencies=web,web-services[pre-initialized project] and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
+You can use this https://start.spring.io/#!type=gradle-project&groupId=com.example&artifactId=producing-web-service&name=producing-web-service&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.producing-web-service&dependencies=web-services[pre-initialized project] and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
 
 To manually initialize the project:
 
 . Navigate to https://start.spring.io.
 This service pulls in all the dependencies you need for an application and does most of the setup for you.
 . Choose either Gradle or Maven and the language you want to use. This guide assumes that you chose Java.
-. Click *Dependencies* and select *Spring Web* and *Spring Web Services*.
+. Click *Dependencies* and select *Spring Web Services*.
 . Click *Generate*.
 . Download the resulting ZIP file, which is an archive of a web application that is configured with your choices.
 
@@ -43,18 +39,34 @@ NOTE: If your IDE has the Spring Initializr integration, you can complete this p
 
 
 [[initial]]
+== Add WSDL runtime dependency
+
+Our service will require the wsdl4j dependency at runtime, let's add it to our Gradle build:
+
+[source,groovy,indent=0]
+----
+include::complete/build.gradle[tags=dependencies]
+----
+
+Or our POM file:
+
+[source,xml,indent=0]
+----
+include::complete/pom.xml[tags=dependencies]
+----
+
 == Create an XML Schema to Define the Domain
 
 The web service domain is defined in an XML schema file (XSD) that Spring-WS will
 automatically export as a WSDL.
 
 Create an XSD file with operations to return a country's `name`, `population`, `capital`,
-and `currency`. The following listing (from `src/main/resources/wsdl/countries.xsd`) shows the
+and `currency`. The following listing (from `src/main/resources/META-INF/schemas/countriesWs.xsd`) shows the
 necessary XSD file:
 
 [source,xml,indent=0]
 ----
-include::complete/src/main/resources/wsdl/countries.xsd[]
+include::complete/src/main/resources/META-INF/schemas/countriesWs.xsd[]
 ----
 
 == Generate Domain Classes Based on an XML Schema
@@ -111,32 +123,48 @@ handle the incoming SOAP requests. The following listing (from
 include::complete/src/main/java/com/example/producingwebservice/CountryEndpoint.java[]
 ----
 
-The {Endpoint}[`@Endpoint`] annotation registers the class with Spring WS as a potential
+The `@Endpoint` annotation registers the class with Spring WS as a potential
 candidate for processing incoming SOAP messages.
 
-The {PayloadRoot}[`@PayloadRoot`] annotation is then used by Spring WS to pick the handler
+The `@PayloadRoot` annotation is then used by Spring WS to pick the handler
 method, based on the message's `namespace` and `localPart`.
 
-The {RequestPayload}[`@RequestPayload`] annotation indicates that the incoming message
+The `@RequestPayload` annotation indicates that the incoming message
 will be mapped to the method's `request` parameter.
 
-The {ResponsePayload}[`@ResponsePayload`] annotation makes Spring WS map the returned
+The `@ResponsePayload` annotation makes Spring WS map the returned
 value to the response payload.
 
 NOTE: In all of these chunks of code, the `io.spring.guides` classes will report
 compile-time errors in your IDE unless you have run the task to generate the domain
 classes based on the WSDL.
 
-
 == Expose the web service
 
-Spring Boot will automatically load and expose your WSDL and XSD definitions the required infrastructure for exposing
-the service definitions. In this case, the WSDL will be available under `http://<host>:<port>/services/countries.wsdl`.
+Now we need to expose the service so that clients can fetch the WSDL definition.
+Spring Boot will scan all "*.xsd" and "*.wsdl" files in the configured location.
+So first, we'll need to declare the location of our schema files by editing `src/main/resources/application.properties`:
 
 [source,properties]
 ----
 include::complete/src/main/resources/application.properties[]
 ----
+
+Spring Boot will create `SimpleXsdSchema` or `DefaultWsdl11Definition` beans with their names matching file names.
+Here, we can expect a `SimpleXsdSchema` bean named `countriesWs` and we can use it to create a WSDL bean for exposing it.
+For that, let's create a new `src/main/java/com/example/producingwebservice/WebServiceConfig.java` file
+with the following content:
+
+[source,java]
+----
+include::complete/src/main/java/com/example/producingwebservice/WebServiceConfig.java[]
+----
+
+The `DefaultWsdl11Definition` exposes a standard WSDL 1.1 by using the configured `XsdSchema`.
+
+IMPORTANT: The bean name for `DefaultWsdl11Definition` determines the URL under
+which the generated WSDL file is available. In this case, the WSDL will be available under
+`http://<host>:<port>/services/countries.wsdl`.
 
 By default, they will be exposed on the `"/services"` HTTP endpoint, but this can be customized
 with the `spring.webservices.path` property.

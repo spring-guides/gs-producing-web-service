@@ -20,17 +20,18 @@ repositories {
 	mavenCentral()
 }
 
+// tag::dependencies[]
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.boot:spring-boot-starter-webservices'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	runtimeOnly 'wsdl4j:wsdl4j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webservices-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+// end::dependencies[]
 
 // tag::xjcconfig[]
 xjc {
-	xsdDir.set(layout.projectDirectory.dir("src/main/resources/wsdl"))
+	xsdDir.set(layout.projectDirectory.dir("src/main/resources/META-INF/schemas"))
 }
 // end::xjcconfig[]
 

@@ -18,27 +18,25 @@
 		<java.version>17</java.version>
 	</properties>
 
+	<!-- tag::dependencies[] -->
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webservices</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
-			<scope>test</scope>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webservices-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<!-- end::dependencies[] -->
 
 	<build>
 		<plugins>
@@ -61,7 +59,7 @@
 				</executions>
 				<configuration>
 					<sources>
-						<source>${project.basedir}/src/main/resources/wsdl/countries.xsd</source>
+						<source>${project.basedir}/src/main/resources/META-INF/schemas/countriesWs.xsd</source>
 					</sources>
 				</configuration>
 			</plugin>
