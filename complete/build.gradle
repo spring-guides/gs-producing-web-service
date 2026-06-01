@@ -3,7 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '4.0.6'
 	id 'io.spring.dependency-management' version '1.1.7'
 	// tag::xjcplugin[]
-	id 'com.github.bjornvester.xjc' version '1.9.0'
+	id 'com.github.bjornvester.xjc' version '1.9.1'
 	// end::xjcplugin[]
 }
 
