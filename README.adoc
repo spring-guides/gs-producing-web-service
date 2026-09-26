@@ -188,7 +188,7 @@ similar to http://www.soapui.org[SoapUI] or use command-line tools if you are on
 [source,bash]
 ----
 # Use data from file
-$ curl --header "Content-Type: text/xml" -d @request.xml http://localhost:8080/services | xmllint --format
+$ curl --header "Content-Type: text/xml" -d @request.xml http://localhost:8080/services | xmllint --format -
 ----
 
 As a result, you should see the following response:
